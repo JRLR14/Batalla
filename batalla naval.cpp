@@ -1,13 +1,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
-#include<time.h> // libreria para valores al azar con respecto al tiempo
-
-
+#include<time.h>
 
 void ColocarBarco(int,int,int,int,int,int,char[][10][10],char[][10],char);
 void CampoCompleto(char[][10],char[][10]);
-
+void ColocarBarcoPC(int,int,int largo,char[][10][10],char[][10]);
 int main(int argc, char *argv[])
 {
     char CampoJ[10][10],CampoPC[10][10];
@@ -68,6 +66,7 @@ int main(int argc, char *argv[])
         
         
         ColocarBarco(x,verificar,CoordX,CoordY,largo,opc,Barcos,CampoJ,dibujo);
+        ColocarBarcoPC(x,verificar,largo,Barcos,CampoPC);
         CampoCompleto(CampoJ,CampoPC);
     
     }
@@ -114,7 +113,126 @@ void CampoCompleto(char CampoJ[][10],char CampoPC[][10]){
     
     system("pause");
 }
-
+void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char Campo[][10]){
+    srand(time(NULL));
+    int CoordX,CoordY,opc;
+    int reiniciar=0;
+    int repetir=0;
+    do{
+        CoordX=(0+rand()%(10)),CoordY=(0+rand()%(10));
+        reiniciar=0;
+        repetir=0;
+        
+        do{
+            verificar=0;
+            CoordX=(0+rand()%(10));
+            CoordY=(0+rand()%(10));
+            if(Campo[CoordY][CoordX]=='-'){
+                Barcos[Barco][CoordY][CoordX]='X';
+                Campo[CoordY][CoordX]='X';
+            }else if(Campo[CoordY][CoordX]=='X'){
+                verificar=1;
+            }
+        }while(verificar==1);
+        verificar=0; 
+        
+        do{  
+            opc=1+(rand()%(5));  
+            repetir=0;
+            int colocar=1;
+            if(opc==1){
+                if(CoordY-largo>=0){
+                    for(int x=1;x<largo;x++){
+                        if(Campo[CoordY-x][CoordX]!='-'){
+                            colocar=0;
+                        }
+                    }
+                    if(colocar==1){
+                        for(int x=1;x<largo;x++){
+                            Campo[CoordY-x][CoordX]='X';
+                            Barcos[Barco][CoordY-x][CoordX]='X';
+                        }
+                    }
+                }
+                
+                if(colocar==0 || (CoordY-largo<0)){
+                    repetir=1;
+                }
+            }
+            
+            if(opc==2){
+                
+                if(CoordX+largo<10){
+                    for(int x=1;x<largo;x++){
+                        if(Campo[CoordY][CoordX+x]!='-'){
+                            colocar=0;
+                        }
+                    }
+                    if(colocar==1){
+                        for(int x=1;x<largo;x++){
+                            Campo[CoordY][CoordX+x]='X';
+                            Barcos[Barco][CoordY][CoordX+x]='X';
+                        }
+                    }
+                }
+                
+                if(colocar==0 || (CoordX+largo>=10)){
+                    repetir=1;
+                }
+            }
+            
+            if(opc==3){
+                
+                if(CoordY+largo<10){
+                    for(int x=1;x<largo;x++){
+                        if(Campo[CoordY+x][CoordX]!='-'){
+                            colocar=0;
+                        }
+                    }
+                    if(colocar==1){
+                        for(int x=1;x<largo;x++){
+                            Campo[CoordY+x][CoordX]='X';
+                            Barcos[Barco][CoordY+x][CoordX]='X';
+                        }
+                    }
+                }
+                
+                if(colocar==0 || (CoordY+largo>=10)){   
+                    repetir=1;
+                }
+            }
+            
+            if(opc==4){
+                
+                if(CoordX-largo>=0){
+                    for(int x=1;x<largo;x++){
+                        if(Campo[CoordY][CoordX-x]!='-'){
+                            colocar=0;
+                        }
+                    }
+                    if(colocar==1){
+                        for(int x=1;x<largo;x++){
+                            Campo[CoordY][CoordX-x]='X';
+                            Barcos[Barco][CoordY][CoordX-x]='X';
+                        }
+                    }
+                }
+                
+                if(colocar==0 || (CoordX-largo<0)){
+                    repetir=1;
+                }
+            }
+            
+            if (opc==5){
+                reiniciar=1;
+                Barcos[Barco][CoordY][CoordX]='-';
+                Campo[CoordY][CoordX]='-';
+            }
+        }while(repetir==1);
+    }while(reiniciar==1);
+    
+    
+}
 void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int opc, char Barcos[][10][10],char CampoJ[][10],char dibujo){
     
     
