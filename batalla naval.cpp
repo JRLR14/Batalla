@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     char Barcos[5][10][10],BarcosPC[5][10][10];
     int CoordX,CoordY,verificar=0,opc,largo,dibujo;
     int vidas[5],vidasPC[5],acertar=0,ganar=0,perder=0;
+    
 
     
     vidas[0]=2;
@@ -230,14 +231,14 @@ void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char
             int colocar=1;
             if(opc==1){
                 if(CoordY-largo>=0){
-                    for(int x=1;x<largo;x++){
+                    for(int x=0;x<largo;x++){
                         if(Campo[CoordY-x][CoordX]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
-                        for(int x=1;x<largo;x++){
-                            Campo[CoordY-x][CoordX]='X';
+                        for(int x=0;x<largo;x++){
+                          //  Campo[CoordY-x][CoordX]='X'; este tambien se censura
                             Barcos[Barco][CoordY-x][CoordX]='X';
                         }
                     }
@@ -251,14 +252,14 @@ void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char
             if(opc==2){
                 
                 if(CoordX+largo<10){
-                    for(int x=1;x<largo;x++){
+                    for(int x=0;x<largo;x++){
                         if(Campo[CoordY][CoordX+x]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
-                        for(int x=1;x<largo;x++){
-                            Campo[CoordY][CoordX+x]='X';
+                        for(int x=0;x<largo;x++){
+                          //  Campo[CoordY][CoordX+x]='X';
                             Barcos[Barco][CoordY][CoordX+x]='X';
                         }
                     }
@@ -272,14 +273,14 @@ void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char
             if(opc==3){
                 
                 if(CoordY+largo<10){
-                    for(int x=1;x<largo;x++){
+                    for(int x=0;x<largo;x++){
                         if(Campo[CoordY+x][CoordX]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
-                        for(int x=1;x<largo;x++){
-                            Campo[CoordY+x][CoordX]='X';
+                        for(int x=0;x<largo;x++){
+                          //  Campo[CoordY+x][CoordX]='X';
                             Barcos[Barco][CoordY+x][CoordX]='X';
                         }
                     }
@@ -293,14 +294,14 @@ void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char
             if(opc==4){
                 
                 if(CoordX-largo>=0){
-                    for(int x=1;x<largo;x++){
+                    for(int x=0;x<largo;x++){
                         if(Campo[CoordY][CoordX-x]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
-                        for(int x=1;x<largo;x++){
-                            Campo[CoordY][CoordX-x]='X';
+                        for(int x=0;x<largo;x++){
+                         //   Campo[CoordY][CoordX-x]='X';
                             Barcos[Barco][CoordY][CoordX-x]='X';
                         }
                     }
@@ -320,7 +321,7 @@ void ColocarBarcoPC(int Barco,int verificar,int largo,char Barcos[][10][10],char
     }while(reiniciar==1);        
 }
 void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int opc, char Barcos[][10][10],char CampoJ[][10],char dibujo){
-    
+    int  *p_X,*p_Y;
     
     int repetir=0,reiniciar;
     do{
@@ -337,10 +338,12 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             }while(CoordY<=0 || CoordY>10);
             CoordY--;
             CoordX--;
-            if(CampoJ[CoordY][CoordX]=='-'){
-                Barcos[Barco][CoordY][CoordX]='X';
-                CampoJ[CoordY][CoordX]=dibujo;
-            }else if(CampoJ[CoordY][CoordX]!='-'){
+            p_X= &CoordX;
+            p_Y= &CoordY;
+            if(CampoJ[*p_Y][*p_X]=='-'){
+                Barcos[Barco][*p_Y][*p_X]='X';
+                CampoJ[*p_Y][*p_X]=dibujo;
+            }else if(CampoJ[*p_Y][*p_X]!='-'){
                 printf("Esta casilla ya tiene un barco.\n\n");
                 verificar=1;
             }
@@ -360,21 +363,21 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             int colocar=1;
             if(opc==1){
                 
-                if((CoordY+1)-largo>=0){
+                if((*p_Y+1)-largo>=0){
                     for(int x=1;x<largo;x++){
-                        if(CampoJ[CoordY-x][CoordX]!='-'){
+                        if(CampoJ[*p_Y-x][*p_X]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
                         for(int x=1;x<largo;x++){
-                            CampoJ[CoordY-x][CoordX]=dibujo;
-                            Barcos[Barco][CoordY-x][CoordX]='X';
+                            CampoJ[*p_Y-x][*p_X]=dibujo;
+                            Barcos[Barco][*p_Y-x][*p_X]='X';
                         }
                     }
                 }
                 
-                if(colocar==0 || ((CoordY+1)-largo<0)){
+                if(colocar==0 || ((*p_Y+1)-largo<0)){
                     printf("no se pudo realizar la colocacion\n");
                     repetir=1;
                     system("pause");
@@ -383,21 +386,21 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             
             if(opc==2){
                 
-                if((CoordX)+largo<=10){
+                if((*p_X)+largo<=10){
                     for(int x=1;x<largo;x++){
-                        if(CampoJ[CoordY][CoordX+x]!='-'){
+                        if(CampoJ[*p_Y][*p_X+x]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
                         for(int x=1;x<largo;x++){
-                            CampoJ[CoordY][CoordX+x]=dibujo;
-                            Barcos[Barco][CoordY][CoordX+x]='X';
+                            CampoJ[*p_Y][*p_X+x]=dibujo;
+                            Barcos[Barco][*p_Y][*p_X+x]='X';
                         }
                     }
                 }
                 
-                if(colocar==0 || ((CoordX)+largo>10)){
+                if(colocar==0 || ((*p_X)+largo>10)){
                     printf("no se pudo realizar la colocacion\n");
                     repetir=1;
                     system("pause");
@@ -406,21 +409,21 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             
             if(opc==3){
                 
-                if((CoordY)+largo<=10){
+                if((*p_Y)+largo<=10){
                     for(int x=1;x<largo;x++){
-                        if(CampoJ[CoordY+x][CoordX]!='-'){
+                        if(CampoJ[*p_Y+x][*p_X]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
                         for(int x=1;x<largo;x++){
-                            CampoJ[CoordY+x][CoordX]=dibujo;
-                            Barcos[Barco][CoordY+x][CoordX]='X';
+                            CampoJ[*p_Y+x][*p_X]=dibujo;
+                            Barcos[Barco][*p_Y+x][*p_X]='X';
                         }
                     }
                 }
                 
-                if(colocar==0 || ((CoordY)+largo>10)){
+                if(colocar==0 || ((*p_Y)+largo>10)){
                     printf("no se pudo realizar la colocacion\n");
                     repetir=1;
                     system("pause");
@@ -429,21 +432,21 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             
             if(opc==4){
                 
-                if((CoordX+1)-largo>=0){
+                if((*p_X+1)-largo>=0){
                     for(int x=1;x<largo;x++){
-                        if(CampoJ[CoordY][CoordX-x]!='-'){
+                        if(CampoJ[*p_Y][*p_X-x]!='-'){
                             colocar=0;
                         }
                     }
                     if(colocar==1){
                         for(int x=1;x<largo;x++){
-                            CampoJ[CoordY][CoordX-x]=dibujo;
-                            Barcos[Barco][CoordY][CoordX-x]='X';
+                            CampoJ[*p_Y][*p_X-x]=dibujo;
+                            Barcos[Barco][*p_Y][*p_X-x]='X';
                         }
                     }
                 }
                 
-                if(colocar==0 || ((CoordX+1)-largo<0)){
+                if(colocar==0 || ((*p_X+1)-largo<0)){
                     printf("no se pudo realizar la colocacion\n");
                     repetir=1;
                     system("pause");
@@ -452,8 +455,8 @@ void ColocarBarco(int Barco,int verificar,int CoordX,int CoordY,int largo,int op
             
             if (opc==5){
                 reiniciar=1;
-                Barcos[Barco][CoordY][CoordX]='-';
-                CampoJ[CoordY][CoordX]='-';
+                Barcos[Barco][*p_Y][*p_X]='-';
+                CampoJ[*p_Y][*p_X]='-';
             }
         }while(repetir==1);
     }while(reiniciar==1);
